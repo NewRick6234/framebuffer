@@ -1,30 +1,28 @@
-#include <SDL2/SDL.h>
+#include <SDL3/SDL.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 
 #define WIDTH 320
 #define HEIGHT 200
 
 uint32_t framebuffer[WIDTH * HEIGHT];
 
-int main(int argc, char* argv[]) {
-    // Inicializa o subsistema de vídeo da SDL
-    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-        printf("Erro ao inicializar SDL: %s\n", SDL_GetError());
-        return 1;
-    }
+int main(void) {    
+    SDL_Window *window;
+    SDL_Renderer *renderer;
+    SDL_Texture *texture;
 
     // Cria a janela de teste
-    SDL_Window* janela = SDL_CreateWindow(
-        "Teste SDL2",                  // Título da janela
-        SDL_WINDOWPOS_CENTERED,        // Posição X
-        SDL_WINDOWPOS_CENTERED,        // Posição Y
-        800,                           // Largura
-        600,                           // Altura
-        SDL_WINDOW_SHOWN               // Flags
+    window = SDL_CreateWindow(
+        "SDL FrameBuffer",  
+                     // Título da janela
+        WIDTH,
+        HEIGHT,
+        0
     );
 
-    if (!janela) {
+    if (!window) {
         printf("Erro ao criar janela: %s\n", SDL_GetError());
         SDL_Quit();
         return 1;
@@ -34,7 +32,7 @@ int main(int argc, char* argv[]) {
     SDL_Delay(3000);
 
     // Destrói a janela e finaliza a SDL
-    SDL_DestroyWindow(janela);
+    SDL_DestroyWindow(window);
     SDL_Quit();
 
     return 0;
