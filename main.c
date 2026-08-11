@@ -3,8 +3,8 @@
 #include <stdlib.h>
 #include <stdint.h>
 
-#define WIDTH 640
-#define HEIGHT 400
+#define WIDTH 320
+#define HEIGHT 200
 
 uint32_t framebuffer[WIDTH * HEIGHT];
 
@@ -18,8 +18,8 @@ int main(void) {
     // Cria a janela de teste
     window = SDL_CreateWindow(
         "SDL FrameBuffer", 
-        WIDTH,
-        HEIGHT,
+        WIDTH *4,
+        HEIGHT *4,
         0
     );
     renderer = SDL_CreateRenderer(
@@ -34,6 +34,8 @@ int main(void) {
         WIDTH,
         HEIGHT
     );
+
+    SDL_SetTextureScaleMode(texture,SDL_SCALEMODE_NEAREST);
     
     uint8_t is_running = 1;
     while (is_running)
@@ -45,8 +47,18 @@ int main(void) {
             }
             
         }
+
+        framebuffer[16500]=0xFF0000;
+        SDL_UpdateTexture(
+            texture,
+            NULL,
+            framebuffer,
+            WIDTH  * sizeof(uint32_t)
+
+        );
         
         SDL_RenderClear(renderer);
+        SDL_RenderTexture(renderer,texture,NULL,NULL);
         SDL_RenderPresent(renderer);
         /* code */
     }
